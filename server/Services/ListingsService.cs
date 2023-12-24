@@ -1,4 +1,5 @@
 
+
 namespace holiday_project.Services;
 public class ListingsService
 {
@@ -15,5 +16,11 @@ public class ListingsService
     {
         Listing listing = _listingsRepository.CreateListing(listingData);
         return listing;
+    }
+
+    internal List<Listing> GetAllListings()
+    {
+        List<Listing> listings = _listingsRepository.GetAllListings();
+        return listings;
     }
 }

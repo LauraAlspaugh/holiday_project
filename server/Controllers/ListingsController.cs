@@ -31,4 +31,18 @@ public class ListingsController : ControllerBase
             return BadRequest(error.Message);
         }
     }
+    [HttpGet]
+    public ActionResult<List<Listing>> GetAllListings()
+    {
+        try
+        {
+            List<Listing> listings = _listingsService.GetAllListings();
+            return Ok(listings);
+        }
+        catch (Exception error)
+        {
+
+            return BadRequest(error.Message);
+        }
+    }
 }
