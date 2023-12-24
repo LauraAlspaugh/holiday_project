@@ -5,8 +5,8 @@
   <main>
     <router-view />
   </main>
-  <footer class="bg-dark text-light">
-    Made with 💖 by CodeWorks
+  <footer class="">
+    <p class="m-5"><i class="mdi mdi-copyright"></i> 2023 by Laura Alspaugh.</p>
   </footer>
 </template>
 
@@ -32,8 +32,8 @@ export default {
 }
 
 body {
-  // background-image: url("https://i.pinimg.com/474x/40/a6/a6/40a6a650136c0d5e86b49b27095895a3.jpg");
-  background-color: white;
+  background-image: url("https://images.unsplash.com/photo-1512668033346-09cfb0d8597b?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8d2FsbCUyMHBhcGVyJTIwY2hyaXN0bWFzJTIwYWVzdGV0aWN8ZW58MHx8MHx8fDA%3D");
+
   background-size: cover;
   background-attachment: fixed;
   color: black;
@@ -43,5 +43,7 @@ footer {
   display: grid;
   place-content: center;
   height: 32px;
+  background-color: #996600;
+  color: black;
 }
 </style>

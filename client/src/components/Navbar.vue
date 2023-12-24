@@ -23,6 +23,7 @@
             :class="theme == 'light' ? 'mdi-weather-sunny' : 'mdi-weather-night'"></i></button>
       </div>
       <Login />
+      <NewListingModal />
     </div>
   </nav>
 </template>
@@ -31,6 +32,7 @@
 import { onMounted, ref } from 'vue';
 import { loadState, saveState } from '../utils/Store.js';
 import Login from './Login.vue';
+import NewListingModal from './NewListingModal.vue';
 export default {
   setup() {
 
@@ -49,7 +51,7 @@ export default {
       }
     }
   },
-  components: { Login }
+  components: { Login, NewListingModal }
 }
 </script>
 
