@@ -1,5 +1,7 @@
 
 
+
+
 namespace holiday_project.Repositories;
 public class ListingsRepository
 {
@@ -31,6 +33,32 @@ public class ListingsRepository
         return listing;
     }
 
+    internal Listing EditListing(Listing listing)
+    {
+        string sql = @"
+    UPDATE listings
+    SET 
+    
+name = @Name,
+description = @Description,
+img = @Img
+WHERE id = @Id;
+
+SELECT lis.*,
+    acc.*
+    FROM listings lis
+    JOIN accounts acc ON lis.creatorId = acc.id
+    Where lis.id = @Id;
+    ";
+        Listing newListing = _db.Query<Listing, Account, Listing>(sql, (listing, account) =>
+    {
+        listing.Creator = account;
+        return listing;
+    }, listing).FirstOrDefault();
+        return newListing;
+
+    }
+
     internal List<Listing> GetAllListings()
     {
         string sql = @"
@@ -46,5 +74,22 @@ public class ListingsRepository
             return listing;
         }).ToList();
         return listings;
+    }
+
+    internal Listing GetListingById(int listingId)
+    {
+        string sql = @"
+    SELECT lis.*,
+    acc.*
+    FROM listings lis
+    JOIN accounts acc ON lis.creatorId = acc.id
+    Where lis.id = @listingId;
+    ";
+        Listing listing = _db.Query<Listing, Account, Listing>(sql, (listing, account) =>
+        {
+            listing.Creator = account;
+            return listing;
+        }, new { listingId }).FirstOrDefault();
+        return listing;
     }
 }

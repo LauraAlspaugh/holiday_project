@@ -45,4 +45,27 @@ public class ListingsController : ControllerBase
             return BadRequest(error.Message);
         }
     }
+    [HttpGet("{listingId}")]
+    public ActionResult<Listing> GetListingById(int listingId)
+    {
+        try
+        {
+            Listing listing = _listingsService.GetListingById(listingId);
+            return listing;
+        }
+        catch (Exception error)
+        {
+
+            return BadRequest(error.Message);
+        }
+    }
+    [Authorize]
+    [HttpPut("{listingId}")]
+    public async Task<ActionResult<Listing>> EditListing(int listingId, [FromBody] Listing listingData)
+    {
+        Account userInfo = await _auth0Provider.GetUserInfoAsync<Account>(HttpContext);
+        string userId = userInfo.Id;
+        Listing listing = _listingsService.EditListing(listingId, listingData, userId);
+        return Ok(listing);
+    }
 }
