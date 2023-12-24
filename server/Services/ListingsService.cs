@@ -19,6 +19,17 @@ public class ListingsService
         return listing;
     }
 
+    internal string DestroyListing(int listingId, string userId)
+    {
+        Listing listing = GetListingById(listingId);
+        if (listing.CreatorId != userId)
+        {
+            throw new Exception("Do not even try it!");
+        }
+        _listingsRepository.DestroyListing(listingId);
+        return "It really is gone!";
+    }
+
     internal Listing EditListing(int listingId, Listing listingData, string userId)
     {
         Listing listing = GetListingById(listingId);

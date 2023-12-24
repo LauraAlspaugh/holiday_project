@@ -2,6 +2,7 @@
 
 
 
+
 namespace holiday_project.Repositories;
 public class ListingsRepository
 {
@@ -31,6 +32,19 @@ public class ListingsRepository
              return listing;
          }, listingData).FirstOrDefault();
         return listing;
+    }
+
+    internal void DestroyListing(int listingId)
+    {
+        string sql = @"
+DELETE FROM listings WHERE id = @listingId LIMIT 1;
+SELECT lis.*,
+    acc.*
+    FROM listings lis
+    JOIN accounts acc ON lis.creatorId = acc.id
+    Where lis.id = @listingId;
+";
+        _db.Execute(sql, new { listingId });
     }
 
     internal Listing EditListing(Listing listing)

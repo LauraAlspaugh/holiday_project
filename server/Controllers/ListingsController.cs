@@ -68,4 +68,21 @@ public class ListingsController : ControllerBase
         Listing listing = _listingsService.EditListing(listingId, listingData, userId);
         return Ok(listing);
     }
+    [Authorize]
+    [HttpDelete("{listingId}")]
+    public async Task<ActionResult<string>> DestroyListing(int listingId)
+    {
+        try
+        {
+            Account userInfo = await _auth0Provider.GetUserInfoAsync<Account>(HttpContext);
+            string userId = userInfo.Id;
+            string message = _listingsService.DestroyListing(listingId, userId);
+            return Ok(message);
+        }
+        catch (Exception error)
+        {
+
+            return BadRequest(error.Message);
+        }
+    }
 }
