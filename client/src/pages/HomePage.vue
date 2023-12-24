@@ -1,43 +1,62 @@
 <template>
-  <div class="home flex-grow-1 d-flex flex-column align-items-center justify-content-center">
-    <div class="home-card p-5 card align-items-center shadow rounded elevation-3">
-      <img src="https://bcw.blob.core.windows.net/public/img/8600856373152463" alt="CodeWorks Logo"
-        class="rounded-circle">
-      <h1 class="my-5 bg-dark text-white p-3 rounded text-center">
-        Vue 3 Starter
-      </h1>
-    </div>
+  <div class="container fashion-page">
+    <section class="row">
+      <div class="col-12">
+        <h1 class="text-center p-3 fashion-name">Find Your Style. Showcase Confidence.</h1>
+      </div>
+    </section>
+    <section class="row">
+      <div v-for="listing in listings" :key="listing.id" class="col-4">
+        <ListingCard :listingProp="listing" />
+      </div>
+    </section>
+
   </div>
 </template>
 
 <script>
+
+import { computed, onMounted } from 'vue';
+import { AppState } from '../AppState.js';
+import { logger } from '../utils/Logger.js';
+import Pop from '../utils/Pop.js';
+import { listingsService } from '../services/ListingsService.js';
+import ListingCard from '../components/ListingCard.vue';
+
 export default {
   setup() {
-    return {
-      
+    onMounted(() => {
+      getListings();
+    });
+    async function getListings() {
+      try {
+        await listingsService.getListings();
+      }
+      catch (error) {
+        logger.error(error);
+        Pop.error(error);
+      }
     }
-  }
+    return {
+      listings: computed(() => AppState.listings)
+    };
+  },
+  components: { ListingCard }
 }
 </script>
 
 <style scoped lang="scss">
-.home {
-  display: grid;
-  height: 80vh;
-  place-content: center;
-  text-align: center;
-  user-select: none;
+.fashion-name {
+  font-family: 'Pinyon Script', cursive;
+  color: black;
+}
 
-  .home-card {
-    width: clamp(500px, 50vw, 100%);
+.fashion-page {
 
-    >img {
-      height: 200px;
-      max-width: 200px;
-      width: 100%;
-      object-fit: contain;
-      object-position: center;
-    }
-  }
+  //   background-image: url("https://i.pinimg.com/474x/40/a6/a6/40a6a650136c0d5e86b49b27095895a3.jpg");
+  //   background-size: cover;
+  //   position: center;
+
+  //   background-attachment: fixed;
 }
 </style>
