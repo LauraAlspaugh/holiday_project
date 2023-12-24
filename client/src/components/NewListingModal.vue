@@ -3,7 +3,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title text-dark" id="exampleModalLabel">Create Listing</h5>
+                    <h5 class="modal-title text-color" id="exampleModalLabel">Create Listing</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body text-dark">
@@ -42,7 +42,7 @@
                             </select>
                         </div>
 
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="submit" class="btn btn-outline-dark">Submit</button>
                     </form>
 
                 </div>
@@ -59,6 +59,10 @@
 <script>
 import { AppState } from '../AppState';
 import { computed, reactive, onMounted, ref } from 'vue';
+import { listingsService } from '../services/ListingsService.js';
+import { logger } from '../utils/Logger.js';
+import Pop from '../utils/Pop.js';
+import { Modal } from 'bootstrap';
 export default {
     setup() {
         const editable = ref({})
@@ -66,11 +70,35 @@ export default {
         return {
             editable,
             categories,
-            listings: computed(() => AppState.listings)
+            listings: computed(() => AppState.listings),
+            async createListing() {
+                try {
+                    const listingData = editable.value
+                    const listing = await listingsService.createListing(listingData)
+                    Pop.success('You have posted a listing!')
+                    editable.value = {}
+                    Modal.getOrCreateInstance("#createListingModal").hide()
+                } catch (error) {
+                    logger.error(error)
+                    Pop.error(error)
+                }
+            }
         }
     }
 };
 </script>
 
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.modal-footer {
+    background-color: #003300;
+}
+
+.modal-header {
+    background-color: #003300;
+}
+
+.text-color {
+    color: #996600;
+}
+</style>

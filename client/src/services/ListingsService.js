@@ -9,5 +9,12 @@ class ListingsService {
         logger.log('getting listings', res.data)
         AppState.listings = res.data.map(pojo => new Listing(pojo))
     }
+    async createListing(listingData) {
+        const res = await api.post('api/listings', listingData)
+        logger.log('posting a listing', res.data)
+        const newListing = new Listing(res.data)
+        AppState.listings.push(newListing)
+        return newListing
+    }
 }
 export const listingsService = new ListingsService()
